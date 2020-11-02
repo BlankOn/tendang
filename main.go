@@ -71,7 +71,6 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		found := false
 		var deployment Deployment
 		for _, deploy := range config.Deployments {
-			log.Println(deploy.Token)
 			if deploy.Name == t.Name && deploy.Token == t.Token {
 				found = true
 				deployment = deploy
