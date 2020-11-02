@@ -2,3 +2,4 @@ deployments:
   - name: xyz
     token: abc
     command: "./xyz.sh"
+    useValue: true

@@ -21,9 +21,10 @@ type Trigger struct {
 }
 
 type Deployment struct {
-	Name    string `json:"name"`
-	Command string `json:"command"`
-	Token   string `json:"token"`
+	Name     string `json:"name"`
+	Command  string `json:"command"`
+	Token    string `json:"token"`
+	UseValue bool   `json:"useValue"`
 }
 
 type Config struct {
@@ -79,6 +80,10 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		if !found {
 			http.Error(w, "unauthorized", http.StatusUnauthorized)
 			return
+		}
+
+		if !deployment.UseValue {
+			t.Value = ""
 		}
 
 		output, err := exec.Command(deployment.Command, t.Value).Output()
