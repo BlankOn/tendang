@@ -1,5 +1,9 @@
 deployments:
   - name: xyz
-    token: abc
-    command: "./xyz.sh"
+    token: RYWKkMSGK7tCb7jCSVZNmJzWneNDb2funq6kSLUPDVCgL8gAMPBfUWLyKtQdLp7A
+    command: "./scripts/deploy-xyz.sh"
     useValue: true
+  - name: pqr
+    token: g6NMXgG7r8THZbAa92uhU2Wy5ckVvMEgNBVa7vghfGezAQr2Uuj5LDeDY3XgzxQg 
+    command: "./scripts/deploy-pqr.sh"
+    useValue: false

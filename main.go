@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"os"
 	"os/exec"
+	"regexp"
 	"strings"
 
 	"github.com/ghodss/yaml"
@@ -85,13 +86,22 @@ func handler(w http.ResponseWriter, r *http.Request) {
 			t.Value = ""
 		}
 
+		// Reject any value that has characters other than: alphanumeric, -, and _
+		re := regexp.MustCompile("^[a-zA-Z0-9_-]*$")
+		if !re.MatchString(t.Value) {
+			http.Error(w, "bad-request", http.StatusBadRequest)
+			return
+		}
+
+		log.Println(t.Value)
 		output, err := exec.Command(deployment.Command, t.Value).Output()
 		if err != nil {
 			log.Println(err)
 			http.Error(w, "internal-server-error", http.StatusInternalServerError)
 			return
 		}
-		w.Write([]byte(string(output)))
+		log.Println(string(output))
+		w.Write([]byte("OK"))
 
 	default:
 		fmt.Fprintf(w, "Tendang!")
