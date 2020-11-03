@@ -21,6 +21,7 @@ curl --header "Content-Type: application/json" --request POST --data '{"name":"x
 Description=tendang
 
 [Service]
+Environment="PORT=8000"
 User=deployment
 WorkingDirectory=/path/to/workdir
 ExecStart=/usr/bin/tendang
