@@ -5,6 +5,6 @@ deployments:
     command: "./scripts/deploy-xyz.sh"
     useValue: true
   - name: pqr
-    hash:  yG2m3ATwLkHK4uZ7qgxXYQ==
-    command: "./scripts/deploy-pqr.sh"
+    hash:  n8z1bHp3nxrCIoVEom7+Tw==
+    command: "./scripts/deploy-pqr.sh && echo 'ok' | tee -a  result"
     useValue: false

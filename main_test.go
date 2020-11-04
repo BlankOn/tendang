@@ -116,3 +116,19 @@ func TestTriggerWithInvalidDeploymentName(t *testing.T) {
 	handler.ServeHTTP(response, request)
 	assert.Equal(t, int(401), response.Code, "Should be failed")
 }
+func TestTriggerWithLongCommand(t *testing.T) {
+	correctTokenForTest = "ZghBUuaq82wIgClFeoqHty2OkZOFDjfmV9DOMIlC4VCHyP3gzc3SkT83f1eTisgo"
+	jsonStr := []byte(`{"name":"pqr","value":"123", "token": "` + correctTokenForTest + `"}`)
+	request := httptest.NewRequest("POST", "/", bytes.NewBuffer(jsonStr))
+	request.Header.Set("Content-Type", "application/json")
+	response := httptest.NewRecorder()
+	handler := http.HandlerFunc(handler)
+	handler.ServeHTTP(response, request)
+	assert.Equal(t, int(200), response.Code, "Should be succeed")
+	bodyBytes, _ := ioutil.ReadAll(response.Body)
+	bodyString := string(bodyBytes)
+	assert.Equal(t, true, strings.Contains(string(bodyString), "OK"))
+	result, _ := ioutil.ReadFile("./result")
+	assert.Equal(t, true, strings.Contains(string(result), "pqr"))
+	assert.Equal(t, true, strings.Contains(string(result), "ok"))
+}

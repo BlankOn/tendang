@@ -106,8 +106,12 @@ func handler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
+		if len(t.Value) > 0 {
+			deployment.Command += " " + t.Value
+		}
 		log.Println(t.Name, t.Value)
-		output, err := exec.Command(deployment.Command, t.Value).Output()
+		log.Println(deployment.Command)
+		output, err := exec.Command("bash", "-c", deployment.Command).Output()
 		if err != nil {
 			log.Println(err)
 			http.Error(w, "internal-server-error", http.StatusInternalServerError)
