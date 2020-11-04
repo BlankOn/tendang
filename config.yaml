@@ -1,9 +1,10 @@
+salt: 
 deployments:
   - name: xyz
-    token: RYWKkMSGK7tCb7jCSVZNmJzWneNDb2funq6kSLUPDVCgL8gAMPBfUWLyKtQdLp7A
+    hash: zo/crMerI7c+tvRqmaK5Qw==
     command: "./scripts/deploy-xyz.sh"
     useValue: true
   - name: pqr
-    token: g6NMXgG7r8THZbAa92uhU2Wy5ckVvMEgNBVa7vghfGezAQr2Uuj5LDeDY3XgzxQg 
+    hash:  yG2m3ATwLkHK4uZ7qgxXYQ==
     command: "./scripts/deploy-pqr.sh"
     useValue: false

@@ -11,8 +11,11 @@ import (
 	"gotest.tools/assert"
 )
 
+var correctTokenForTest string
+
 func TestTrigger(t *testing.T) {
-	jsonStr := []byte(`{"name":"xyz","value":"123", "token": "RYWKkMSGK7tCb7jCSVZNmJzWneNDb2funq6kSLUPDVCgL8gAMPBfUWLyKtQdLp7A"}`)
+	correctTokenForTest = "PzO0xhYhndAUu9xTwhOP85EyiyyZSk5dzAG39YYDzm9PEtTWa3yDbQZkV0DuuIRe"
+	jsonStr := []byte(`{"name":"xyz","value":"123", "token": "` + correctTokenForTest + `"}`)
 	request := httptest.NewRequest("POST", "/", bytes.NewBuffer(jsonStr))
 	request.Header.Set("Content-Type", "application/json")
 	response := httptest.NewRecorder()
@@ -25,7 +28,7 @@ func TestTrigger(t *testing.T) {
 	result, _ := ioutil.ReadFile("./result")
 	assert.Equal(t, true, strings.Contains(string(result), "123"))
 
-	jsonStr = []byte(`{"name":"xyz","value":"abc-456", "token": "RYWKkMSGK7tCb7jCSVZNmJzWneNDb2funq6kSLUPDVCgL8gAMPBfUWLyKtQdLp7A"}`)
+	jsonStr = []byte(`{"name":"xyz","value":"abc-456", "token": "` + correctTokenForTest + `"}`)
 	request = httptest.NewRequest("POST", "/", bytes.NewBuffer(jsonStr))
 	request.Header.Set("Content-Type", "application/json")
 	response = httptest.NewRecorder()
@@ -38,7 +41,7 @@ func TestTrigger(t *testing.T) {
 	result, _ = ioutil.ReadFile("./result")
 	assert.Equal(t, true, strings.Contains(string(result), "abc-456"))
 
-	jsonStr = []byte(`{"name":"xyz","value":"abc_456", "token": "RYWKkMSGK7tCb7jCSVZNmJzWneNDb2funq6kSLUPDVCgL8gAMPBfUWLyKtQdLp7A"}`)
+	jsonStr = []byte(`{"name":"xyz","value":"abc_456", "token": "` + correctTokenForTest + `"}`)
 	request = httptest.NewRequest("POST", "/", bytes.NewBuffer(jsonStr))
 	request.Header.Set("Content-Type", "application/json")
 	response = httptest.NewRecorder()
@@ -53,7 +56,7 @@ func TestTrigger(t *testing.T) {
 }
 
 func TestTriggerArbitraryCodeExecution(t *testing.T) {
-	jsonStr := []byte(`{"name":"xyz","value":"456 && echo 'sip' > /tmp/ok", "token": "RYWKkMSGK7tCb7jCSVZNmJzWneNDb2funq6kSLUPDVCgL8gAMPBfUWLyKtQdLp7A"}`)
+	jsonStr := []byte(`{"name":"xyz","value":"456 && echo 'sip' > /tmp/ok", "token": "` + correctTokenForTest + `"}`)
 	request := httptest.NewRequest("POST", "/", bytes.NewBuffer(jsonStr))
 	request.Header.Set("Content-Type", "application/json")
 	response := httptest.NewRecorder()
@@ -61,7 +64,7 @@ func TestTriggerArbitraryCodeExecution(t *testing.T) {
 	handler.ServeHTTP(response, request)
 	assert.Equal(t, int(400), response.Code, "Should be fail")
 
-	jsonStr = []byte(`{"name":"xyz","value":"|", "token": "RYWKkMSGK7tCb7jCSVZNmJzWneNDb2funq6kSLUPDVCgL8gAMPBfUWLyKtQdLp7A"}`)
+	jsonStr = []byte(`{"name":"xyz","value":"|", "token": "` + correctTokenForTest + `"}`)
 	request = httptest.NewRequest("POST", "/", bytes.NewBuffer(jsonStr))
 	request.Header.Set("Content-Type", "application/json")
 	response = httptest.NewRecorder()
@@ -69,7 +72,7 @@ func TestTriggerArbitraryCodeExecution(t *testing.T) {
 	handler.ServeHTTP(response, request)
 	assert.Equal(t, int(400), response.Code, "Should be fail")
 
-	jsonStr = []byte(`{"name":"xyz","value":"\", "token": "RYWKkMSGK7tCb7jCSVZNmJzWneNDb2funq6kSLUPDVCgL8gAMPBfUWLyKtQdLp7A"}`)
+	jsonStr = []byte(`{"name":"xyz","value":"\", "token": "` + correctTokenForTest + `"}`)
 	request = httptest.NewRequest("POST", "/", bytes.NewBuffer(jsonStr))
 	request.Header.Set("Content-Type", "application/json")
 	response = httptest.NewRecorder()
@@ -77,7 +80,7 @@ func TestTriggerArbitraryCodeExecution(t *testing.T) {
 	handler.ServeHTTP(response, request)
 	assert.Equal(t, int(400), response.Code, "Should be fail")
 
-	jsonStr = []byte(`{"name":"xyz","value":">", "token": "RYWKkMSGK7tCb7jCSVZNmJzWneNDb2funq6kSLUPDVCgL8gAMPBfUWLyKtQdLp7A"}`)
+	jsonStr = []byte(`{"name":"xyz","value":">", "token": "` + correctTokenForTest + `"}`)
 	request = httptest.NewRequest("POST", "/", bytes.NewBuffer(jsonStr))
 	request.Header.Set("Content-Type", "application/json")
 	response = httptest.NewRecorder()
@@ -85,7 +88,7 @@ func TestTriggerArbitraryCodeExecution(t *testing.T) {
 	handler.ServeHTTP(response, request)
 	assert.Equal(t, int(400), response.Code, "Should be fail")
 
-	jsonStr = []byte(`{"name":"xyz","value":"a b", "token": "RYWKkMSGK7tCb7jCSVZNmJzWneNDb2funq6kSLUPDVCgL8gAMPBfUWLyKtQdLp7A"}`)
+	jsonStr = []byte(`{"name":"xyz","value":"a b", "token": "` + correctTokenForTest + `"}`)
 	request = httptest.NewRequest("POST", "/", bytes.NewBuffer(jsonStr))
 	request.Header.Set("Content-Type", "application/json")
 	response = httptest.NewRecorder()
